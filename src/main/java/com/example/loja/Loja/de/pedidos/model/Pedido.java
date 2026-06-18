@@ -1,5 +1,6 @@
 package com.example.loja.Loja.de.pedidos.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -24,5 +25,7 @@ public class Pedido {
     private String nomeCliente;
 
     @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL)
+    @JsonManagedReference("items")
+    //Ao buscar um pedido, se tiver itens aparece normalmente
     private List<Item> items;
 }

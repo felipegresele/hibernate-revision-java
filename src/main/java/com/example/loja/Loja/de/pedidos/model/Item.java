@@ -1,5 +1,6 @@
 package com.example.loja.Loja.de.pedidos.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -22,5 +23,7 @@ public class Item {
 
     @ManyToOne
     @JoinColumn(name = "pedido_id")
+    @JsonBackReference
+    //É ignorado na serialização - o campo de produto nao vai aparecer no json
     private Pedido pedido;
 }
