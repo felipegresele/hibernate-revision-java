@@ -40,7 +40,10 @@ public class SecurityConfig {
                                 "/swagger-ui.html",
                                 "/webjars/**",
                                 "/v3/api-docs/**").permitAll()
-                        .anyRequest().authenticated())
+                        .requestMatchers("/api/livro/", "/api/livro/**").hasAnyAuthority("ADMIN", "OPERACIONAL")
+                        .requestMatchers("/**").hasAuthority("ADMIN")
+                        .anyRequest().authenticated()
+                )
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }

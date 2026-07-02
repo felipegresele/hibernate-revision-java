@@ -6,7 +6,9 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "user_tb")
@@ -19,6 +21,13 @@ public class User implements UserDetails {
     private String nome;
     private String email;
     private String senha;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "users_roles",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id")
+    )
+    private Set<Roles> roles = new HashSet<>();
 
     @OneToMany( mappedBy="user" )
     private List<RefreshToken> refreshToken;
@@ -55,11 +64,18 @@ public class User implements UserDetails {
         this.senha = senha;
     }
 
+    public Set<Roles> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<Roles> roles) {
+        this.roles = roles;
+    }
 
     //Diz quais roles/permissoes um usuario tem
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of();
+        return roles;
     }
 
     //Retorna a senha em forma de hash do usuario
